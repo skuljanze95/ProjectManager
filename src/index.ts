@@ -1,10 +1,13 @@
+import { PrismaClient } from '@prisma/client';
 import express from 'express';
 import morgan from 'morgan';
+
+const db = new PrismaClient({ log: ['error', 'info', 'query', 'warn'] });
 
 const app = express();
 app.use(morgan('dev'));
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   res.json({ hello: 'world' });
 });
 
