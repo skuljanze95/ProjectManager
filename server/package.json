@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "rimraf dist && swc ./src -d dist",
-    "db:console": "docker compose exec postgres psql -h localhost -U postgres -d db_dev",
+    "db:console": "docker compose exec postgres psql -h localhost -U postgres -d db_postgres",
     "db:migrate": "knex migrate:latest",
     "docker:db:migrate": "docker compose run backend yarn db:migrate",
     "docker:db:migrate:undo": "docker compose run backend npx knex migrate:down",
