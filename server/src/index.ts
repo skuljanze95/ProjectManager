@@ -1,11 +1,17 @@
-import { PrismaClient } from '@prisma/client';
 import express from 'express';
 import morgan from 'morgan';
+import cors from 'cors';
+import * as bodyParser from 'body-parser';
 
-const db = new PrismaClient({ log: ['error', 'info', 'query', 'warn'] });
+import routes from './routes';
 
 const app = express();
+
 app.use(morgan('dev'));
+app.use(cors());
+app.use(bodyParser.json());
+
+app.use('/', routes);
 
 app.get('/', async (req, res) => {
   res.json({ hello: 'world' });
