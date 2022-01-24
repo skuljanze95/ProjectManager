@@ -1,7 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import * as bodyParser from 'body-parser';
+import bodyParser from 'body-parser';
 
 import routes from './routes';
 
@@ -12,10 +12,6 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use('/', routes);
-
-app.get('/', async (req, res) => {
-  res.json({ hello: 'world' });
-});
 
 const port = Number(process.env.PORT ?? 8080);
 app.listen(port, '0.0.0.0', () => {
