@@ -10,6 +10,29 @@ const db = new PrismaClient({ log: ['error', 'info', 'query', 'warn'] });
 const genId = () => nanoid(16);
 
 class AuthController {
+  public static refTokens = new Array<{
+    username: string;
+    refreshToken: string;
+  }>();
+  private static issueToken = async (username: string) => {
+    const userToken = {
+      username,
+    };
+
+    const accessToken = jwt.sign(userToken, config.jwtSecret, {
+      expiresIn: config.jwtSecretExpiration,
+    });
+    const refreshToken = jwt.sign(userToken, config.jwtRefreshSecret, {
+      expiresIn: config.jwtRefreshSecretExpiration,
+    });
+
+    AuthController.refTokens.push({
+      username: username,
+      refreshToken: refreshToken,
+    });
+    return { accessToken: accessToken, refreshToken: refreshToken };
+  };
+
   static login = async (req: Request, res: Response) => {
     let { username, password } = req.body;
 
@@ -27,13 +50,9 @@ class AuthController {
     if (!bcrypt.compareSync(password, user.password))
       return res.status(400).json('Username or password incorect');
 
-    const token = jwt.sign(
-      { userId: user.id, username: user.username },
-      config.jwtSecret,
-      { expiresIn: '1h' }
-    );
+    let newToken = await AuthController.issueToken(username);
 
-    res.send({ accessToken: token });
+    res.send(newToken);
   };
 
   static register = async (req: Request, res: Response) => {
@@ -62,6 +81,24 @@ class AuthController {
       return res.status(400).json(e);
     }
     res.status(200).json('User created!');
+  };
+
+  //TODO: save refresh token to db, so you can revoke it.
+  static refreshToken = async (req: Request, res: Response) => {
+    const token = <string>req.headers['refresh-token'];
+    let jwtPayload;
+
+    try {
+      jwtPayload = <any>jwt.verify(token, config.jwtRefreshSecret);
+      res.locals.jwtPayload = jwtPayload;
+    } catch (error) {
+      res.status(401).send();
+      return;
+    }
+
+    const newToken = await AuthController.issueToken(jwtPayload.username);
+
+    res.status(200).send(newToken);
   };
 }
 export default AuthController;
