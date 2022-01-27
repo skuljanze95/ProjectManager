@@ -1,7 +1,6 @@
 import axiosInstance from './api';
 import TokenService from '@/modules/auth/services/token.service';
 import { Store } from 'vuex';
-import authService from '@/modules/auth/services/auth.service';
 import router from '@/router';
 
 const setup = (store: Store<any>) => {
