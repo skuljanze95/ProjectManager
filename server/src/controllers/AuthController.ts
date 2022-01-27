@@ -85,14 +85,14 @@ class AuthController {
 
   //TODO: save refresh token to db, so you can revoke it.
   static refreshToken = async (req: Request, res: Response) => {
-    const token = <string>req.headers['refresh-token'];
+    const token = <string>req.body['refresh-token'];
     let jwtPayload;
 
     try {
       jwtPayload = <any>jwt.verify(token, config.jwtRefreshSecret);
       res.locals.jwtPayload = jwtPayload;
     } catch (error) {
-      res.status(401).send();
+      res.status(403).send();
       return;
     }
 
