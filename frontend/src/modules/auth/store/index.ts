@@ -49,8 +49,8 @@ export default {
   },
   mutations: {
     loginSuccess(
-      state: { status: { loggedIn: boolean }; user: InterfaceLogin },
-      user: InterfaceLogin
+      state: { status: { loggedIn: boolean }; user: any },
+      user: any
     ) {
       state.status.loggedIn = true;
       state.user = user;
@@ -71,7 +71,7 @@ export default {
     },
     refreshToken(
       state: { status: { loggedIn: boolean }; user: any },
-      accessToken: string
+      accessToken: any
     ) {
       state.status.loggedIn = true;
       state.user = { ...state.user, accessToken: accessToken };
