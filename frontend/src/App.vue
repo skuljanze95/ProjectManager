@@ -1,5 +1,5 @@
 <template>
-  <AppLayout class="font-sans">
+  <AppLayout>
     <router-view />
   </AppLayout>
 </template>
