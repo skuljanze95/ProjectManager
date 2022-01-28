@@ -10,8 +10,6 @@ import VueAxios from 'vue-axios';
 import { registerModules } from './services/registre-modules';
 import setupInterceptors from './services/setupInterceptors';
 
-import './main.css';
-
 registerModules({
   auth: authModule,
 });
