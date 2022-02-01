@@ -7,7 +7,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'home',
     component: HomeView,
     meta: {
-      layout: 'AppLayoutHome',
+      layout: 'AppLayoutApp',
     },
   },
 ];
