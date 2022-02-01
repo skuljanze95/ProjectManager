@@ -1,8 +1,8 @@
 <template>
-  <div class="home">
+  <v-container class="home">
     <h1>HOME</h1>
     <button @click="handleClick">Test api</button>
-  </div>
+  </v-container>
 </template>
 
 <script setup lang="ts">

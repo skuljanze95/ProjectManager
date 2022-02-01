@@ -1,8 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+import vuetify from './plugins/vuetify';
+import { loadFonts } from './plugins/webfontloader';
+
 import AppLayout from './layouts/AppLayout.vue';
 import authModule from './modules/auth';
 import axios from 'axios';
@@ -15,12 +17,12 @@ registerModules({
 });
 setupInterceptors(store);
 
+loadFonts();
+
 createApp(App)
-  .directive('validity', function (el: any, binding: any) {
-    el.setCustomValidity(binding.value ? binding.value : '');
-  })
   .use(VueAxios, axios)
-  .use(store)
   .use(router)
+  .use(store)
   .component('AppLayout', AppLayout)
+  .use(vuetify)
   .mount('#app');
