@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RouteRecordRaw } from 'vue-router';
 import Tasks from './views/Tasks.vue';
 
