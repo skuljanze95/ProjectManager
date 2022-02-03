@@ -1,60 +1,50 @@
 <template>
-  <div>
-    <div>
-      <img
-        src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-        alt="Workflow"
-      />
-      <h2>Register your account</h2>
-      <p>
-        Already have an account?
-        <router-link to="/login">Sign in</router-link>
-      </p>
-    </div>
-    <form v-on:submit.prevent="onSubmit" action="#" method="POST">
-      <input type="hidden" name="remember" value="true" />
-      <div>
-        <div>
-          <label for="email-address">Email address</label>
-          <input
-            v-model="payload.username"
-            type="email"
-            autocomplete="email"
-            placeholder="Email address"
-            required="true"
-          />
+  <v-container class="d-flex fill-height">
+    <v-card max-width="400" width="400" class="ma-auto">
+      <v-card-title class="justify-center">
+        <img
+          class="register__image"
+          src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+          alt="Workflow"
+        />
+      </v-card-title>
+
+      <v-card-text>
+        <div class="text-center">
+          <h2 class="pt-6">Register your account</h2>
+          <p class="pt-2 pb-6">
+            Already have an account?
+            <router-link to="/login">Sign in</router-link>
+          </p>
         </div>
 
-        <div>
-          <label for="password">Password</label>
-          <input
+        <v-form ref="form" lazy-validation>
+          <v-text-field
+            v-model="payload.username"
+            :rules="usernameRules"
+            label="Username"
+          ></v-text-field>
+          <v-text-field
             v-model="payload.password"
             type="password"
-            placeholder="Password"
-            required="true"
-          />
-        </div>
-        <div>
-          <label for="password">Confirm password</label>
-          <input
+            :rules="[passwordRules]"
+            label="Password"
+            class="input-group--focused"
+          ></v-text-field>
+          <v-text-field
             v-model="confirmPassword"
             type="password"
-            placeholder="Confirm password"
-            required="true"
-            v-validity="
-              payload.password !== confirmPassword
-                ? 'Passwords do not match'
-                : ''
-            "
-          />
-        </div>
-      </div>
-
-      <div>
-        <button>Sign up</button>
-      </div>
-    </form>
-  </div>
+            :rules="passwordRules"
+            label="Confirm password"
+            class="input-group--focused"
+          ></v-text-field>
+        </v-form>
+      </v-card-text>
+      <v-card-actions class="justify-center">
+        <v-btn @click="onSubmit" class="mb-6"> Sign up </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-container>
 </template>
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
@@ -67,6 +57,9 @@ const payload = reactive<InterfaceLogin>({
 
 const confirmPassword = ref();
 
+const usernameRules = [(v: any) => !!v || 'Name is required'];
+const passwordRules = [(v: any) => !!v || 'Password is required'];
+
 const onSubmit = () => {
   if (
     !payload.password ||
@@ -78,3 +71,11 @@ const onSubmit = () => {
   console.log(payload);
 };
 </script>
+<style scoped>
+.fill-height {
+  height: 100%;
+}
+.register__image {
+  width: 80px;
+}
+</style>
