@@ -4,19 +4,16 @@ import api from '@/services/api';
 import TokenService from '@/modules/auth/services/token.service';
 
 class AuthService {
-  login(payload: InterfaceLogin) {
-    return api
-      .post('/auth/login', {
+  async login(payload: InterfaceLogin) {
+    try {
+      const response = await api.post('/auth/login', {
         username: payload.username,
         password: payload.password,
-      })
-      .then((response: any) => {
-        if (response.data.accessToken) {
-          TokenService.setUser(response.data);
-        }
-
-        return response.data;
       });
+      if (response.data.accessToken) TokenService.setUser(response.data);
+    } catch (err: any) {
+      console.error(err.response.data);
+    }
   }
 
   logout() {
